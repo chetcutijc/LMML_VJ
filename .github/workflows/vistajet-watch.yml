@@ -15,7 +15,7 @@ on:
   workflow_dispatch: {}    # lets you trigger a manual test run from the Actions tab
 
 permissions:
-  contents: write   # needed so the workflow can commit seen_flights.json back
+  contents: write   # needed so the workflow can commit updated data back
 
 jobs:
   check:
@@ -35,10 +35,21 @@ jobs:
           OPENSKY_CLIENT_SECRET: ${{ secrets.OPENSKY_CLIENT_SECRET }}
         run: python vistajet_lmml_watch.py
 
-      - name: Persist seen-flights state
+      - name: Persist state
         run: |
           git config user.name "vistajet-watch-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add seen_flights.json
-          git diff --staged --quiet || git commit -m "Update seen flights"
-          git push
+          # Only stage files that actually exist - a manual test run outside
+          # the 07:00/12:00/15:00 window, or a real check with nothing new,
+          # can legitimately produce no seen_flights.json update. Trying to
+          # `git add` a file that isn't there is what caused the earlier
+          # "pathspec did not match any files" failure.
+          for f in seen_flights.json docs/data.json; do
+            [ -f "$f" ] && git add "$f"
+          done
+          if git diff --staged --quiet; then
+            echo "Nothing new to commit."
+          else
+            git commit -m "Update watch data"
+            git push
+          fi
