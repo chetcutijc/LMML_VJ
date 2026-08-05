@@ -1,43 +1,52 @@
-# VistaJet LMML watch
+# LMML departures watch
 
-Watches for VistaJet (ICAO callsign prefix `VJT`) flights departing Malta
-(LMML), using OpenSky Network's free ADS-B data. Runs on a schedule and
-publishes a small dashboard of what it finds.
+Watches departures from Malta (LMML) using OpenSky Network's free ADS-B
+data, and sorts what it finds into two categories on a small dashboard:
+
+- **VistaJet** - ICAO callsign prefix `VJT`
+- **Military** - ICAO24 address falls in a known-military hex range
 
 ## What this can and can't actually tell you
 
-- **Reliable:** "a VistaJet aircraft departed/is departing LMML, headed to
-  [X]." This comes straight from live transponder data.
-- **Not reliable:** whether a flight is genuinely empty. No public flight
-  data includes a passenger count - operators don't broadcast that.
-  VistaJet's own "Empty Legs" page doesn't list flights directly anymore
-  either; it now points to the XO app, a broader marketplace (spans
-  aircraft beyond just VistaJet's own fleet) with listings loaded
-  client-side and no public API - not something a scheduled script can
-  reliably read.
-- **What this script does instead:** flags departures with unusually short
-  ground time beforehand (`SHORT_GROUND_HOURS` in the script, default 3h)
-  as a rough "possible repositioning" signal on the dashboard. Treat this
-  with real skepticism - Malta is VistaJet's home base (Maltese AOC
-  MT-17), so a short ground time can just as easily be routine base
-  activity as a genuine empty leg.
+Both categories only include aircraft that are actively broadcasting
+ADS-B. Anything that isn't - including any military aircraft genuinely
+trying to avoid tracking, which just turns its transponder off - simply
+won't appear. This is a "what's visible" log, not a comprehensive one.
 
-If you want a *confirmed* empty leg to actually book, checking the XO app
-by hand is still the most reliable route - this is best used as an early
-heads-up, not a booking tool.
+**VistaJet**: departures are reliable ("this aircraft departed LMML").
+The **possible repositioning** flag is not reliable - no public flight
+data includes a passenger count, and VistaJet's own "Empty Legs" page
+doesn't list flights directly anymore either; it now points to the XO
+app, a broader marketplace (spans aircraft beyond VistaJet's own fleet)
+with no public API. So instead, departures with an unusually short gap
+since that aircraft's last arrival (`SHORT_GROUND_HOURS` in the script,
+default 3h) get flagged as a rough guess. Treat it with real skepticism -
+Malta is VistaJet's home base, so a short ground time is often just
+routine operations, not an empty leg. For a flight you could actually
+book, check the XO app by hand.
+
+**Military**: identification comes from matching each departure's ICAO24
+address against [tar1090-db](https://github.com/wiedehopf/tar1090-db), a
+community-maintained list of known-military address ranges (the same
+data used by the popular tar1090 ADS-B web display). It's an inference
+from the address block, not an official designation, and it isn't
+scoped to any one country - it flags military aircraft worldwide. The
+script fetches this list fresh on every run; if that fetch fails, the
+military category is just skipped for that run rather than the whole
+thing breaking.
 
 ## The dashboard
 
 `docs/index.html` reads `docs/data.json` (which the script updates on
-every real check) and lists recent departures, plus when it last checked.
-Hosted for free via GitHub Pages - see setup step 5.
+every real check) and shows both categories as separate sections, plus
+when it last checked. Hosted for free via GitHub Pages - see setup step 5.
 
 ## Setup
 
 1. **Create a free OpenSky account** at opensky-network.org, then go to
    Account -> API Client and generate a `client_id` / `client_secret`.
    Anonymous access works too but has a much smaller daily credit budget,
-   worth avoiding since each check calls two endpoints.
+   worth avoiding since each check can call multiple endpoints.
 
 2. **Add them as GitHub Actions secrets** in your repo: Settings ->
    Secrets and variables -> Actions -> New repository secret -
@@ -45,7 +54,8 @@ Hosted for free via GitHub Pages - see setup step 5.
 
 3. **Add the files to your repo:**
    - `vistajet_lmml_watch.py` and `requirements.txt` at the repo root
-   - `docs/index.html`, `docs/data.json`, and `docs/.nojekyll` in a `docs/` folder
+   - `docs/index.html`, `docs/data.json`, and `docs/.nojekyll` in a
+     `docs/` folder
    - `vistajet-watch.yml` -> move this into `.github/workflows/`
 
    The `.nojekyll` file is an empty file - it just needs to exist. Without
