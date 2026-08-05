@@ -4,6 +4,8 @@ vistajet_lmml_watch.py
 
 Watches for VistaJet (ICAO callsign prefix "VJT") departures from Malta
 International Airport (LMML), using OpenSky Network's public ADS-B data.
+Writes results to docs/data.json, which the dashboard at docs/index.html
+reads and displays.
 
 Reliable:   "a VistaJet aircraft departed/is departing LMML."
 Heuristic:  "this departure looks like a repositioning/empty leg."
@@ -35,8 +37,12 @@ TOLERANCE_MINUTES = 15               # "close enough" to a target hour
 NORMAL_LOOKBACK_HOURS = 20           # covers the longest gap between checks
 WIDE_LOOKBACK_HOURS = 50             # fallback if OpenSky rejects the short window
 SHORT_GROUND_HOURS = 3               # below this, flag as "looks repositioned"
-SEEN_FILE = Path("seen_flights.json")
+
+SEEN_FILE = Path("seen_flights.json")          # dedup only, not displayed
 SEEN_RETENTION_DAYS = 14
+
+HISTORY_FILE = Path("docs/data.json")          # what the dashboard reads
+HISTORY_RETENTION_DAYS = 30
 
 TOKEN_URL = "https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token"
 CLIENT_ID = os.environ.get("OPENSKY_CLIENT_ID")
@@ -103,7 +109,7 @@ def query_flights(kind: str, tokens: TokenManager, hours_back: int) -> list:
     return resp.json()
 
 
-# --------------------------------------------------------------- state ----
+# ----------------------------------------------------- dedup state (seen) --
 def load_seen() -> set:
     if SEEN_FILE.exists():
         return set(json.loads(SEEN_FILE.read_text()))
@@ -114,6 +120,30 @@ def save_seen(seen: set):
     cutoff = int(datetime.now(timezone.utc).timestamp()) - SEEN_RETENTION_DAYS * 86400
     pruned = {s for s in seen if int(s.rsplit("-", 1)[1]) >= cutoff}
     SEEN_FILE.write_text(json.dumps(sorted(pruned), indent=2))
+
+
+# -------------------------------------------------- dashboard history data --
+def load_history() -> dict:
+    if HISTORY_FILE.exists():
+        return json.loads(HISTORY_FILE.read_text())
+    return {"last_checked_utc": None, "last_checked_malta": None, "flights": []}
+
+
+def save_history(history: dict, now_malta: datetime):
+    """Always called on every real check (see main()) - even when nothing
+    new was found - so the dashboard's 'last checked' time stays honest."""
+    now_utc = datetime.now(timezone.utc)
+    history["last_checked_utc"] = now_utc.isoformat()
+    history["last_checked_malta"] = f"{now_malta:%Y-%m-%d %H:%M}"
+
+    cutoff = now_utc - timedelta(days=HISTORY_RETENTION_DAYS)
+    history["flights"] = [
+        f for f in history["flights"]
+        if datetime.fromisoformat(f["discovered_utc"]) >= cutoff
+    ]
+
+    HISTORY_FILE.parent.mkdir(parents=True, exist_ok=True)
+    HISTORY_FILE.write_text(json.dumps(history, indent=2))
 
 
 # ----------------------------------------------------------- heuristic ----
@@ -161,22 +191,31 @@ def main():
 
     seen = load_seen()
     new = [d for d in vistajet if f"{d['icao24']}-{d['firstSeen']}" not in seen]
+    history = load_history()
 
-    if not new:
+    if new:
+        arrivals = query_flights("arrival", tokens, NORMAL_LOOKBACK_HOURS)
+        print(f"{now_malta:%Y-%m-%d %H:%M} - {len(new)} new VistaJet LMML departure(s):")
+        for d in new:
+            dep_time = datetime.fromtimestamp(d["firstSeen"], tz=timezone.utc).astimezone(MALTA_TZ)
+            dest = d.get("estArrivalAirport") or "Unknown"
+            flag = looks_like_repositioning(d, arrivals)
+            print(f"  {d['callsign'].strip():<10} departed {dep_time:%Y-%m-%d %H:%M} -> {dest}"
+                  f"{' -- looks repositioned (heuristic, not confirmed)' if flag else ''}")
+            history["flights"].insert(0, {
+                "callsign": d["callsign"].strip(),
+                "icao24": d["icao24"],
+                "departed_malta": f"{dep_time:%Y-%m-%d %H:%M}",
+                "destination": dest,
+                "likely_repositioning": flag,
+                "discovered_utc": datetime.now(timezone.utc).isoformat(),
+            })
+            seen.add(f"{d['icao24']}-{d['firstSeen']}")
+        save_seen(seen)
+    else:
         print(f"{now_malta:%Y-%m-%d %H:%M} - no new VistaJet LMML departures.")
-        return
 
-    arrivals = query_flights("arrival", tokens, NORMAL_LOOKBACK_HOURS)
-
-    print(f"{now_malta:%Y-%m-%d %H:%M} - {len(new)} new VistaJet LMML departure(s):")
-    for d in new:
-        dep_time = datetime.fromtimestamp(d["firstSeen"], tz=timezone.utc).astimezone(MALTA_TZ)
-        dest = d.get("estArrivalAirport") or "unknown destination"
-        flag = " -- looks repositioned (heuristic, not confirmed)" if looks_like_repositioning(d, arrivals) else ""
-        print(f"  {d['callsign'].strip():<10} departed {dep_time:%Y-%m-%d %H:%M} -> {dest}{flag}")
-        seen.add(f"{d['icao24']}-{d['firstSeen']}")
-
-    save_seen(seen)
+    save_history(history, now_malta)
 
 
 if __name__ == "__main__":
