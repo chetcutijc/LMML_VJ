@@ -45,8 +45,13 @@ Hosted for free via GitHub Pages - see setup step 5.
 
 3. **Add the files to your repo:**
    - `vistajet_lmml_watch.py` and `requirements.txt` at the repo root
-   - `docs/index.html` and `docs/data.json` in a `docs/` folder
+   - `docs/index.html`, `docs/data.json`, and `docs/.nojekyll` in a `docs/` folder
    - `vistajet-watch.yml` -> move this into `.github/workflows/`
+
+   The `.nojekyll` file is an empty file - it just needs to exist. Without
+   it, GitHub Pages tries to run the `docs/` folder through Jekyll (its
+   default static-site builder) and apply a default theme, which fails
+   since this isn't a Jekyll site.
 
 4. **Give the workflow write access:** Settings -> Actions -> General ->
    Workflow permissions -> "Read and write permissions" (it needs this to
