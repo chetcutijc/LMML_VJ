@@ -1,0 +1,44 @@
+name: VistaJet LMML watch
+
+on:
+  schedule:
+    # Malta is CET (UTC+1) in winter and CEST (UTC+2) in summer.
+    # We fire at BOTH possible UTC times for each local target hour;
+    # the script checks true Malta local time and no-ops the "wrong" one,
+    # so this self-adjusts across the DST switch without edits twice a year.
+    - cron: '0 6 * * *'   # 07:00 Malta time (CET / winter)
+    - cron: '0 5 * * *'   # 07:00 Malta time (CEST / summer)
+    - cron: '0 11 * * *'  # 12:00 Malta time (CET / winter)
+    - cron: '0 10 * * *'  # 12:00 Malta time (CEST / summer)
+    - cron: '0 14 * * *'  # 15:00 Malta time (CET / winter)
+    - cron: '0 13 * * *'  # 15:00 Malta time (CEST / summer)
+  workflow_dispatch: {}    # lets you trigger a manual test run from the Actions tab
+
+permissions:
+  contents: write   # needed so the workflow can commit seen_flights.json back
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install -r requirements.txt
+
+      - name: Run watcher
+        env:
+          OPENSKY_CLIENT_ID: ${{ secrets.OPENSKY_CLIENT_ID }}
+          OPENSKY_CLIENT_SECRET: ${{ secrets.OPENSKY_CLIENT_SECRET }}
+        run: python vistajet_lmml_watch.py
+
+      - name: Persist seen-flights state
+        run: |
+          git config user.name "vistajet-watch-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add seen_flights.json
+          git diff --staged --quiet || git commit -m "Update seen flights"
+          git push
