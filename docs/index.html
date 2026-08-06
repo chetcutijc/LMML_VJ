@@ -195,7 +195,7 @@
 <main>
   <p class="eyebrow">Malta &middot; LMML</p>
   <h1>Departures</h1>
-  <p class="lede">Two things this watches for out of Malta: <strong>VistaJet</strong> flights, and anything flagged <strong>military</strong> by ICAO24 address. Neither list is exhaustive &mdash; see the note below.</p>
+  <p class="lede">Three things this watches for out of Malta: <strong>VistaJet</strong> flights, anything flagged <strong>military</strong> by ICAO24 address, and <strong>commercial</strong> &mdash; everything else departing LMML. None of the three lists are exhaustive &mdash; see the note below.</p>
 
   <div class="status">
     <span><span class="dot" aria-hidden="true"></span><span id="last-checked">Loading&hellip;</span></span>
@@ -217,10 +217,18 @@
     </ul>
   </section>
 
+  <section>
+    <p class="board-label">Commercial <span class="count" id="count-commercial"></span></p>
+    <ul class="board" id="board-commercial">
+      <li class="row empty">Loading&hellip;</li>
+    </ul>
+  </section>
+
   <footer>
     <p>Departure data from <a href="https://opensky-network.org" target="_blank" rel="noopener">OpenSky Network</a> (public ADS-B). Neither section is a complete picture: aircraft that aren't broadcasting ADS-B &mdash; including any military aircraft actively avoiding tracking &mdash; simply won't appear here at all.</p>
     <p><strong>VistaJet &middot; possible repositioning</strong> flags a short gap between an aircraft's last arrival and this departure. LMML is VistaJet's home base, so that's often just routine operations, not an empty leg. For a flight you can actually book, check the XO app directly.</p>
     <p><strong>Military</strong> flights are identified by matching each aircraft's ICAO24 address against <a href="https://github.com/wiedehopf/tar1090-db" target="_blank" rel="noopener">tar1090-db</a>, a community-maintained list of known-military address ranges. It's an inference from the address block, not an official designation, and it isn't country-specific &mdash; it flags military aircraft worldwide.</p>
+    <p><strong>Commercial</strong> is just what's left after the other two categories are pulled out &mdash; in practice mostly scheduled airline traffic through LMML, but technically any departure that isn't flagged VistaJet or military lands here, including other private or general aviation. Kept for 3 days rather than 30, since there's simply a lot more of it.</p>
   </footer>
 </main>
 
@@ -292,6 +300,10 @@
       showFlag: false,
       emptyMessage: 'No military departures logged yet. Only aircraft broadcasting ADS-B can show up here at all.',
     });
+    renderBoard('board-commercial', 'count-commercial', data.commercial, {
+      showFlag: false,
+      emptyMessage: 'No commercial departures logged yet.',
+    });
   }
 
   async function load() {
@@ -300,7 +312,7 @@
       if (!res.ok) throw new Error('no data yet');
       render(await res.json());
     } catch (e) {
-      render({ last_checked_malta: null, vistajet: [], military: [] });
+      render({ last_checked_malta: null, vistajet: [], military: [], commercial: [] });
     }
   }
 
