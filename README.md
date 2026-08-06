@@ -1,14 +1,16 @@
 # LMML departures watch
 
 Watches departures from Malta (LMML) using OpenSky Network's free ADS-B
-data, and sorts what it finds into two categories on a small dashboard:
+data, and sorts what it finds into three categories on a small dashboard:
 
 - **VistaJet** - ICAO callsign prefix `VJT`
 - **Military** - ICAO24 address falls in a known-military hex range
+- **Commercial** - everything else (mostly scheduled airline traffic,
+  but technically any departure not caught by the two rules above)
 
 ## What this can and can't actually tell you
 
-Both categories only include aircraft that are actively broadcasting
+All three categories only include aircraft that are actively broadcasting
 ADS-B. Anything that isn't - including any military aircraft genuinely
 trying to avoid tracking, which just turns its transponder off - simply
 won't appear. This is a "what's visible" log, not a comprehensive one.
@@ -35,11 +37,17 @@ script fetches this list fresh on every run; if that fetch fails, the
 military category is just skipped for that run rather than the whole
 thing breaking.
 
+**Commercial**: whatever isn't VistaJet or military. There's a lot more
+of it than the other two categories, so it's kept for 3 days (not 30)
+and capped at the 60 most recent entries - both configurable at the top
+of the script (`RETENTION_DAYS`, `MAX_ENTRIES`).
+
 ## The dashboard
 
 `docs/index.html` reads `docs/data.json` (which the script updates on
-every real check) and shows both categories as separate sections, plus
-when it last checked. Hosted for free via GitHub Pages - see setup step 5.
+every real check) and shows all three categories as separate sections,
+plus when it last checked. Hosted for free via GitHub Pages - see setup
+step 5.
 
 ## Setup
 
