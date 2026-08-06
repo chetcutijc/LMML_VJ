@@ -3,26 +3,34 @@
 vistajet_lmml_watch.py
 
 Watches departures from Malta International Airport (LMML) using OpenSky
-Network's public ADS-B data, and sorts what it finds into two categories:
+Network's public ADS-B data, and sorts what it finds into three
+categories:
 
-  - vistajet: VistaJet flights (ICAO callsign prefix "VJT")
-  - military: flights whose ICAO24 address falls in a known-military hex
-    range, per the community-maintained tar1090-db project (used by the
-    popular tar1090 ADS-B web display). This can only flag aircraft that
-    are broadcasting ADS-B in the first place - military aircraft that
-    genuinely don't want to be tracked simply turn their transponders off,
-    so this is a "what's visible" log, not a comprehensive one.
+  - vistajet:   VistaJet flights (ICAO callsign prefix "VJT")
+  - military:   flights whose ICAO24 address falls in a known-military hex
+                range, per the community-maintained tar1090-db project
+                (used by the popular tar1090 ADS-B web display).
+  - commercial: everything else - whatever isn't caught by the two rules
+                above. In practice, at LMML, that's overwhelmingly
+                scheduled airline traffic, but technically it also covers
+                any other private or general-aviation departure.
+
+All three categories only include aircraft that are broadcasting ADS-B in
+the first place. Anything that isn't - including any military aircraft
+that genuinely doesn't want to be tracked, which just turns its
+transponder off - simply won't appear. This is a "what's visible" log,
+not a comprehensive one.
 
 Writes results to docs/data.json, which the dashboard at docs/index.html
-reads and displays as two sections.
+reads and displays as three sections.
 
 Reliable:   "this aircraft departed/is departing LMML."
 Heuristic:  for VistaJet only, "this departure looks like a
             repositioning/empty leg" - a rough signal based on short
             ground time, not a confirmed empty leg. See README.md. This
-            heuristic isn't applied to the military category since the
+            heuristic isn't applied to the other categories since the
             "empty leg charter" framing it's built on doesn't map onto
-            military operations.
+            military or scheduled commercial operations.
 
 Meant to be triggered on a schedule (see the included GitHub Actions
 workflow). It checks the current Malta local time itself and only does
@@ -56,8 +64,14 @@ SEEN_FILE = Path("seen_flights.json")          # dedup only, not displayed
 SEEN_RETENTION_DAYS = 14
 
 HISTORY_FILE = Path("docs/data.json")          # what the dashboard reads
-HISTORY_RETENTION_DAYS = 30
-CATEGORIES = ("vistajet", "military")
+CATEGORIES = ("vistajet", "military", "commercial")
+# VistaJet and military movements are relatively rare and each one is
+# individually notable, so they're worth keeping around for a month.
+# Commercial traffic is high-volume and much less individually notable -
+# a short window plus a hard cap keeps the file (and the page) from
+# growing without bound on a busy day.
+RETENTION_DAYS = {"vistajet": 30, "military": 30, "commercial": 3}
+MAX_ENTRIES = {"commercial": 60}
 
 TOKEN_URL = "https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token"
 CLIENT_ID = os.environ.get("OPENSKY_CLIENT_ID")
@@ -155,6 +169,15 @@ def is_military(icao24: str, ranges: list) -> bool:
     return any(lo <= val <= hi for lo, hi in ranges)
 
 
+def categorise(d: dict, military_ranges: list) -> str:
+    """Every departure lands in exactly one of the three buckets."""
+    if is_vistajet(d):
+        return "vistajet"
+    if is_military(d.get("icao24"), military_ranges):
+        return "military"
+    return "commercial"
+
+
 # ----------------------------------------------------- dedup state (seen) --
 def load_seen() -> set:
     if SEEN_FILE.exists():
@@ -186,12 +209,16 @@ def save_history(history: dict, now_malta: datetime):
     history["last_checked_utc"] = now_utc.isoformat()
     history["last_checked_malta"] = f"{now_malta:%Y-%m-%d %H:%M}"
 
-    cutoff = now_utc - timedelta(days=HISTORY_RETENTION_DAYS)
     for cat in CATEGORIES:
-        history[cat] = [
+        cutoff = now_utc - timedelta(days=RETENTION_DAYS[cat])
+        pruned = [
             f for f in history.get(cat, [])
             if datetime.fromisoformat(f["discovered_utc"]) >= cutoff
         ]
+        cap = MAX_ENTRIES.get(cat)
+        if cap is not None:
+            pruned = pruned[:cap]  # newest-first already, so this keeps the most recent
+        history[cat] = pruned
 
     HISTORY_FILE.parent.mkdir(parents=True, exist_ok=True)
     HISTORY_FILE.write_text(json.dumps(history, indent=2))
@@ -218,7 +245,7 @@ def looks_like_repositioning(departure: dict, arrivals: list) -> bool:
     return 0 <= ground_hours <= SHORT_GROUND_HOURS
 
 
-def record(d: dict, **extra) -> dict:
+def record(d: dict, **extra) -> tuple:
     dep_time = datetime.fromtimestamp(d["firstSeen"], tz=timezone.utc).astimezone(MALTA_TZ)
     entry = {
         "callsign": (d.get("callsign") or "").strip() or "Unknown callsign",
@@ -254,19 +281,18 @@ def main():
     seen = load_seen()
     history = load_history()
 
-    new_vj = [
-        d for d in departures
-        if is_vistajet(d) and flight_key(d) not in seen
-    ]
-    new_mil = [
-        d for d in departures
-        if is_military(d.get("icao24"), military_ranges) and flight_key(d) not in seen
-    ]
+    new_by_cat = {cat: [] for cat in CATEGORIES}
+    for d in departures:
+        if flight_key(d) in seen:
+            continue
+        new_by_cat[categorise(d, military_ranges)].append(d)
 
-    if new_vj:
+    total_new = sum(len(v) for v in new_by_cat.values())
+
+    if new_by_cat["vistajet"]:
         arrivals = query_flights("arrival", tokens, NORMAL_LOOKBACK_HOURS)
-        print(f"{now_malta:%Y-%m-%d %H:%M} - {len(new_vj)} new VistaJet LMML departure(s):")
-        for d in new_vj:
+        print(f"{now_malta:%Y-%m-%d %H:%M} - {len(new_by_cat['vistajet'])} new VistaJet LMML departure(s):")
+        for d in new_by_cat["vistajet"]:
             flag = looks_like_repositioning(d, arrivals)
             entry, dep_time = record(d, likely_repositioning=flag)
             print(f"  {entry['callsign']:<10} departed {dep_time:%Y-%m-%d %H:%M} -> {entry['destination']}"
@@ -274,18 +300,19 @@ def main():
             history["vistajet"].insert(0, entry)
             seen.add(flight_key(d))
 
-    if new_mil:
-        print(f"{now_malta:%Y-%m-%d %H:%M} - {len(new_mil)} new military LMML departure(s):")
-        for d in new_mil:
+    for cat in ("military", "commercial"):
+        if not new_by_cat[cat]:
+            continue
+        print(f"{now_malta:%Y-%m-%d %H:%M} - {len(new_by_cat[cat])} new {cat} LMML departure(s):")
+        for d in new_by_cat[cat]:
             entry, dep_time = record(d)
             print(f"  {entry['callsign']:<10} departed {dep_time:%Y-%m-%d %H:%M} -> {entry['destination']}")
-            history["military"].insert(0, entry)
+            history[cat].insert(0, entry)
             seen.add(flight_key(d))
 
-    if not new_vj and not new_mil:
-        print(f"{now_malta:%Y-%m-%d %H:%M} - no new VistaJet or military LMML departures.")
-
-    if new_vj or new_mil:
+    if total_new == 0:
+        print(f"{now_malta:%Y-%m-%d %H:%M} - no new departures in any category.")
+    else:
         save_seen(seen)
 
     save_history(history, now_malta)
