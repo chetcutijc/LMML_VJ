@@ -145,6 +145,16 @@
     font-weight:500;
     letter-spacing:.02em;
   }
+  .row .dir{
+    font-family:var(--mono);
+    font-size:.68rem;
+    color:var(--muted);
+    border:1px solid var(--panel-border);
+    border-radius:4px;
+    padding:1px 5px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+  }
   .row .date{
     margin-left:auto;
     color:var(--muted);
@@ -195,7 +205,7 @@
 <main>
   <p class="eyebrow">Malta &middot; LMML</p>
   <h1>Departures</h1>
-  <p class="lede">Three things this watches for out of Malta: <strong>VistaJet</strong> flights, anything flagged <strong>military</strong> by ICAO24 address, and <strong>commercial</strong> &mdash; everything else departing LMML. None of the three lists are exhaustive &mdash; see the note below.</p>
+  <p class="lede">Three things this watches for at Malta: <strong>VistaJet</strong> arrivals and departures, anything flagged <strong>military</strong> by ICAO24 address (departures only), and <strong>commercial</strong> &mdash; everything else departing LMML. None of the three lists are exhaustive &mdash; see the note below.</p>
 
   <div class="status">
     <span><span class="dot" aria-hidden="true"></span><span id="last-checked">Loading&hellip;</span></span>
@@ -226,9 +236,10 @@
 
   <footer>
     <p>Departure data from <a href="https://opensky-network.org" target="_blank" rel="noopener">OpenSky Network</a> (public ADS-B). Neither section is a complete picture: aircraft that aren't broadcasting ADS-B &mdash; including any military aircraft actively avoiding tracking &mdash; simply won't appear here at all.</p>
-    <p><strong>VistaJet &middot; possible repositioning</strong> flags a short gap between an aircraft's last arrival and this departure. LMML is VistaJet's home base, so that's often just routine operations, not an empty leg. For a flight you can actually book, check the XO app directly.</p>
+    <p><strong>VistaJet &middot; possible repositioning</strong> flags a short gap between an aircraft's last arrival and a later departure - it only applies to departures, not arrivals. LMML is VistaJet's home base, so that's often just routine operations, not an empty leg. For a flight you can actually book, check the XO app directly.</p>
     <p><strong>Military</strong> flights are identified by matching each aircraft's ICAO24 address against <a href="https://github.com/wiedehopf/tar1090-db" target="_blank" rel="noopener">tar1090-db</a>, a community-maintained list of known-military address ranges. It's an inference from the address block, not an official designation, and it isn't country-specific &mdash; it flags military aircraft worldwide.</p>
     <p><strong>Commercial</strong> is just what's left after the other two categories are pulled out &mdash; in practice mostly scheduled airline traffic through LMML, but technically any departure that isn't flagged VistaJet or military lands here, including other private or general aviation. Kept for 3 days rather than 30, since there's simply a lot more of it.</p>
+    <p>New VistaJet or military hits can also trigger a WhatsApp message if that's set up - see the README. Commercial never does; there's too much of it.</p>
   </footer>
 </main>
 
@@ -270,17 +281,21 @@
     }
 
     board.innerHTML = flights.map(f => {
-      const [datePart, timePart] = (f.departed_malta || '').split(' ');
-      const dest = (!f.destination || f.destination === 'Unknown')
-        ? 'Destination unclear'
-        : escapeHtml(f.destination);
-      const flagged = opts.showFlag && f.likely_repositioning;
+      const timeMalta = f.time_malta || f.departed_malta || '';
+      const [datePart, timePart] = timeMalta.split(' ');
+      const place = f.place || f.destination;
+      const isArrival = f.direction === 'arrival';
+      const placeLabel = (!place || place === 'Unknown')
+        ? (isArrival ? 'origin unclear' : 'destination unclear')
+        : escapeHtml(place);
+      const flagged = opts.showFlag && !isArrival && f.likely_repositioning;
       return `
         <li class="row${flagged ? ' flagged' : ''}">
           <span class="time">${escapeHtml(timePart || '--:--')}</span>
           <span class="flight">${escapeHtml(f.callsign)}</span>
+          ${isArrival ? '<span class="dir">arr</span>' : ''}
           <span class="date">${escapeHtml(datePart || '')}</span>
-          <span class="dest">&rarr; ${dest}</span>
+          <span class="dest">${isArrival ? 'from' : 'to'} ${placeLabel}</span>
           ${flagged ? '<span class="tag">possible repositioning &middot; unconfirmed</span>' : ''}
         </li>`;
     }).join('');
@@ -294,7 +309,7 @@
 
     renderBoard('board-vistajet', 'count-vistajet', data.vistajet, {
       showFlag: true,
-      emptyMessage: 'No VistaJet departures logged yet. This checks LMML three times a day — the board fills in after the next run.',
+      emptyMessage: 'No VistaJet arrivals or departures logged yet. This checks LMML three times a day — the board fills in after the next run.',
     });
     renderBoard('board-military', 'count-military', data.military, {
       showFlag: false,
