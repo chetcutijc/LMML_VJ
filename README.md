@@ -3,10 +3,10 @@
 Watches departures from Malta (LMML) using OpenSky Network's free ADS-B
 data, and sorts what it finds into three categories on a small dashboard:
 
-- **VistaJet** - ICAO callsign prefix `VJT`
-- **Military** - ICAO24 address falls in a known-military hex range
-- **Commercial** - everything else (mostly scheduled airline traffic,
-  but technically any departure not caught by the two rules above)
+- **VistaJet** - ICAO callsign prefix `VJT`, both arrivals and departures
+- **Military** - ICAO24 address falls in a known-military hex range (departures only)
+- **Commercial** - everything else departing (mostly scheduled airline
+  traffic, but technically any departure not caught by the two rules above)
 
 ## What this can and can't actually tell you
 
@@ -15,13 +15,14 @@ ADS-B. Anything that isn't - including any military aircraft genuinely
 trying to avoid tracking, which just turns its transponder off - simply
 won't appear. This is a "what's visible" log, not a comprehensive one.
 
-**VistaJet**: departures are reliable ("this aircraft departed LMML").
-The **possible repositioning** flag is not reliable - no public flight
-data includes a passenger count, and VistaJet's own "Empty Legs" page
-doesn't list flights directly anymore either; it now points to the XO
-app, a broader marketplace (spans aircraft beyond VistaJet's own fleet)
-with no public API. So instead, departures with an unusually short gap
-since that aircraft's last arrival (`SHORT_GROUND_HOURS` in the script,
+**VistaJet**: arrivals and departures are both reliable ("this aircraft
+arrived at / departed LMML"). The **possible repositioning** flag is not
+reliable, and only ever applies to departures - no public flight data
+includes a passenger count, and VistaJet's own "Empty Legs" page doesn't
+list flights directly anymore either; it now points to the XO app, a
+broader marketplace (spans aircraft beyond VistaJet's own fleet) with no
+public API. So instead, departures with an unusually short gap since
+that aircraft's last arrival (`SHORT_GROUND_HOURS` in the script,
 default 3h) get flagged as a rough guess. Treat it with real skepticism -
 Malta is VistaJet's home base, so a short ground time is often just
 routine operations, not an empty leg. For a flight you could actually
@@ -84,6 +85,68 @@ step 5.
    workflow, then check the log output before trusting the schedule.
    Note a manual run outside the 07:00/12:00/15:00 Malta window will
    correctly do nothing - that's by design, not a failure.
+
+## WhatsApp alerts (optional)
+
+New VistaJet or military hits can also send a WhatsApp message, using
+Meta's official Cloud API. This is meaningfully more setup than anything
+else here - budget maybe 20-30 minutes of active setup, plus template
+approval time on top (often just minutes, but not guaranteed). Commercial
+hits never trigger a message; there's too much of it.
+
+1. **Create a free Meta Developer account** at developers.facebook.com,
+   then create a new App and add the **WhatsApp** product to it. This
+   automatically provisions a WhatsApp Business Account and a free test
+   phone number - you don't need your own dedicated number for personal
+   use.
+
+2. **Add your own number as a test recipient.** On the app's WhatsApp ->
+   API Setup page, add your WhatsApp number under "To" (up to 5 allowed
+   on the test number). Meta sends a verification code to confirm it.
+
+3. **Send yourself the sample "hello_world" template** from that same
+   page to confirm the connection works end to end.
+
+4. **Create a permanent access token.** The temporary one from step 3
+   expires in 24 hours, which would silently break the schedule the very
+   next day. Go to Business Settings -> System Users -> Add, create a
+   system user, click "Assign Assets", give it Full Control over both
+   your app and your WhatsApp Business Account, then click "Generate
+   token" on that system user with no expiration set. Save it somewhere
+   safe - it won't be shown again.
+
+5. **Create a message template.** Proactive messages (the bot messaging
+   you first, rather than replying to you) need Meta's pre-approval -
+   free-form text only works within 24 hours of you messaging the bot,
+   which isn't a realistic way to run an automated watcher. In WhatsApp
+   Manager -> Message Templates, create a new template:
+   - Category: **Utility**
+   - Name: `lmml_watch_alert` (or anything - just match it in step 7)
+   - Body: `LMML Watch: {{1}} - {{2}}`
+
+   Submit for review.
+
+6. **Note down three values:** the **Phone number ID** (API Setup page),
+   your **permanent access token** (step 4), and your own WhatsApp
+   number in international format with no `+` or spaces
+   (e.g. `35699112233`).
+
+7. **Add GitHub Actions secrets** (Settings -> Secrets and variables ->
+   Actions): `WHATSAPP_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, and
+   `WHATSAPP_RECIPIENT_NUMBER` are required. `WHATSAPP_TEMPLATE_NAME` is
+   optional - it already defaults to `lmml_watch_alert` in the script, so
+   only add it if you named your template something else.
+
+If any of the required secrets aren't set, the script just skips sending
+WhatsApp messages and logs a line saying so - it won't break the rest of
+the run.
+
+**Cost**: messages sent within 24 hours of you messaging the bot are
+free. Outside that window - the normal case for an automated alert - Meta
+charges a small per-template fee, roughly $0.001-0.08 depending on your
+country, billed through your Meta Business account. For occasional
+alerts like this it's effectively pocket change, but it isn't literally
+free.
 
 ## One real risk worth knowing about
 
