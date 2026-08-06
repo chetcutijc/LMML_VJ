@@ -2,18 +2,22 @@
 """
 vistajet_lmml_watch.py
 
-Watches departures from Malta International Airport (LMML) using OpenSky
+Watches movements at Malta International Airport (LMML) using OpenSky
 Network's public ADS-B data, and sorts what it finds into three
 categories:
 
-  - vistajet:   VistaJet flights (ICAO callsign prefix "VJT")
-  - military:   flights whose ICAO24 address falls in a known-military hex
-                range, per the community-maintained tar1090-db project
-                (used by the popular tar1090 ADS-B web display).
-  - commercial: everything else - whatever isn't caught by the two rules
-                above. In practice, at LMML, that's overwhelmingly
-                scheduled airline traffic, but technically it also covers
-                any other private or general-aviation departure.
+  - vistajet:   VistaJet flights (ICAO callsign prefix "VJT") - BOTH
+                departures from and arrivals into LMML.
+  - military:   departures whose ICAO24 address falls in a known-military
+                hex range, per the community-maintained tar1090-db
+                project (used by the popular tar1090 ADS-B web display).
+  - commercial: everything else departing LMML - whatever isn't caught
+                by the two rules above. In practice that's overwhelmingly
+                scheduled airline traffic, but technically it also
+                covers any other private or general-aviation departure.
+
+Military and commercial are departures-only by design; VistaJet is the
+only category tracked in both directions.
 
 All three categories only include aircraft that are broadcasting ADS-B in
 the first place. Anything that isn't - including any military aircraft
@@ -22,15 +26,18 @@ transponder off - simply won't appear. This is a "what's visible" log,
 not a comprehensive one.
 
 Writes results to docs/data.json, which the dashboard at docs/index.html
-reads and displays as three sections.
+reads and displays as three sections. Optionally also sends a WhatsApp
+message (via the official Cloud API) for each new VistaJet or military
+hit - see README.md for the setup this needs. Commercial hits never
+trigger a message; there are simply too many of them.
 
-Reliable:   "this aircraft departed/is departing LMML."
-Heuristic:  for VistaJet only, "this departure looks like a
+Reliable:   "this aircraft departed/arrived at LMML."
+Heuristic:  for VistaJet departures only, "this looks like a
             repositioning/empty leg" - a rough signal based on short
-            ground time, not a confirmed empty leg. See README.md. This
-            heuristic isn't applied to the other categories since the
-            "empty leg charter" framing it's built on doesn't map onto
-            military or scheduled commercial operations.
+            ground time, not a confirmed empty leg. See README.md. Not
+            applied to VistaJet arrivals or to the other two categories,
+            since the "empty leg charter" framing it's built on doesn't
+            map onto those.
 
 Meant to be triggered on a schedule (see the included GitHub Actions
 workflow). It checks the current Malta local time itself and only does
@@ -58,7 +65,7 @@ TARGET_HOURS = (7, 12, 15)           # local times this should actually run at
 TOLERANCE_MINUTES = 15               # "close enough" to a target hour
 NORMAL_LOOKBACK_HOURS = 20           # covers the longest gap between checks
 WIDE_LOOKBACK_HOURS = 50             # fallback if OpenSky rejects the short window
-SHORT_GROUND_HOURS = 3               # below this, flag VistaJet as "looks repositioned"
+SHORT_GROUND_HOURS = 3               # below this, flag a VJ departure as "looks repositioned"
 
 SEEN_FILE = Path("seen_flights.json")          # dedup only, not displayed
 SEEN_RETENTION_DAYS = 14
@@ -73,12 +80,21 @@ CATEGORIES = ("vistajet", "military", "commercial")
 RETENTION_DAYS = {"vistajet": 30, "military": 30, "commercial": 3}
 MAX_ENTRIES = {"commercial": 60}
 
-TOKEN_URL = "https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token"
-CLIENT_ID = os.environ.get("OPENSKY_CLIENT_ID")
-CLIENT_SECRET = os.environ.get("OPENSKY_CLIENT_SECRET")
+OPENSKY_TOKEN_URL = "https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token"
+OPENSKY_CLIENT_ID = os.environ.get("OPENSKY_CLIENT_ID")
+OPENSKY_CLIENT_SECRET = os.environ.get("OPENSKY_CLIENT_SECRET")
+
+# WhatsApp alerts are entirely optional - every function below degrades to
+# a no-op (with a log line) if these aren't set, so leaving them unset
+# just means no WhatsApp messages get sent. See README.md for setup.
+WHATSAPP_API_VERSION = "v22.0"
+WHATSAPP_TOKEN = os.environ.get("WHATSAPP_TOKEN")
+WHATSAPP_PHONE_NUMBER_ID = os.environ.get("WHATSAPP_PHONE_NUMBER_ID")
+WHATSAPP_TEMPLATE_NAME = os.environ.get("WHATSAPP_TEMPLATE_NAME", "lmml_watch_alert")
+WHATSAPP_RECIPIENT_NUMBER = os.environ.get("WHATSAPP_RECIPIENT_NUMBER")
 
 
-# ------------------------------------------------------------------ auth --
+# ------------------------------------------------------------ opensky auth --
 class TokenManager:
     """Handles OpenSky's OAuth2 client-credentials flow. Falls back to
     (much more rate-limited) anonymous access if no credentials are set."""
@@ -88,7 +104,7 @@ class TokenManager:
         self.expires_at = None
 
     def headers(self) -> dict:
-        if not CLIENT_ID or not CLIENT_SECRET:
+        if not OPENSKY_CLIENT_ID or not OPENSKY_CLIENT_SECRET:
             return {}
         if not self.token or datetime.now(timezone.utc) >= self.expires_at:
             self._refresh()
@@ -96,11 +112,11 @@ class TokenManager:
 
     def _refresh(self):
         r = requests.post(
-            TOKEN_URL,
+            OPENSKY_TOKEN_URL,
             data={
                 "grant_type": "client_credentials",
-                "client_id": CLIENT_ID,
-                "client_secret": CLIENT_SECRET,
+                "client_id": OPENSKY_CLIENT_ID,
+                "client_secret": OPENSKY_CLIENT_SECRET,
             },
             timeout=30,
         )
@@ -169,15 +185,6 @@ def is_military(icao24: str, ranges: list) -> bool:
     return any(lo <= val <= hi for lo, hi in ranges)
 
 
-def categorise(d: dict, military_ranges: list) -> str:
-    """Every departure lands in exactly one of the three buckets."""
-    if is_vistajet(d):
-        return "vistajet"
-    if is_military(d.get("icao24"), military_ranges):
-        return "military"
-    return "commercial"
-
-
 # ----------------------------------------------------- dedup state (seen) --
 def load_seen() -> set:
     if SEEN_FILE.exists():
@@ -226,9 +233,9 @@ def save_history(history: dict, now_malta: datetime):
 
 # ----------------------------------------------------------- heuristic ----
 def looks_like_repositioning(departure: dict, arrivals: list) -> bool:
-    """VistaJet only. Rough signal: short ground time before this
-    departure. Treat with real skepticism - LMML is VistaJet's home base,
-    so a short ground time can just as easily mean routine base
+    """VistaJet departures only. Rough signal: short ground time before
+    this departure. Treat with real skepticism - LMML is VistaJet's home
+    base, so a short ground time can just as easily mean routine base
     operations. See README.md."""
     icao24 = departure.get("icao24")
     dep_time = departure.get("firstSeen")
@@ -245,17 +252,81 @@ def looks_like_repositioning(departure: dict, arrivals: list) -> bool:
     return 0 <= ground_hours <= SHORT_GROUND_HOURS
 
 
-def record(d: dict, **extra) -> tuple:
-    dep_time = datetime.fromtimestamp(d["firstSeen"], tz=timezone.utc).astimezone(MALTA_TZ)
+def record(d: dict, direction: str, **extra) -> tuple:
+    """direction is 'departure' or 'arrival'. A departure's relevant
+    timestamp is firstSeen and relevant place is estArrivalAirport
+    (destination); an arrival's relevant timestamp is lastSeen and
+    relevant place is estDepartureAirport (origin)."""
+    if direction == "arrival":
+        event_time = datetime.fromtimestamp(d["lastSeen"], tz=timezone.utc).astimezone(MALTA_TZ)
+        place = d.get("estDepartureAirport") or "Unknown"
+    else:
+        event_time = datetime.fromtimestamp(d["firstSeen"], tz=timezone.utc).astimezone(MALTA_TZ)
+        place = d.get("estArrivalAirport") or "Unknown"
+
     entry = {
         "callsign": (d.get("callsign") or "").strip() or "Unknown callsign",
         "icao24": d["icao24"],
-        "departed_malta": f"{dep_time:%Y-%m-%d %H:%M}",
-        "destination": d.get("estArrivalAirport") or "Unknown",
+        "direction": direction,
+        "time_malta": f"{event_time:%Y-%m-%d %H:%M}",
+        "place": place,
         "discovered_utc": datetime.now(timezone.utc).isoformat(),
     }
     entry.update(extra)
-    return entry, dep_time
+    return entry, event_time
+
+
+# ------------------------------------------------------------- whatsapp ---
+def send_whatsapp_alert(headline: str, detail: str):
+    """Best-effort - a WhatsApp failure should never break the rest of the
+    run. Skipped silently (with one log line) if not fully configured."""
+    if not (WHATSAPP_TOKEN and WHATSAPP_PHONE_NUMBER_ID and WHATSAPP_RECIPIENT_NUMBER):
+        print("WhatsApp not configured (missing token/phone id/recipient) - skipping alert.")
+        return
+    url = f"https://graph.facebook.com/{WHATSAPP_API_VERSION}/{WHATSAPP_PHONE_NUMBER_ID}/messages"
+    payload = {
+        "messaging_product": "whatsapp",
+        "to": WHATSAPP_RECIPIENT_NUMBER,
+        "type": "template",
+        "template": {
+            "name": WHATSAPP_TEMPLATE_NAME,
+            "language": {"code": "en"},
+            "components": [{
+                "type": "body",
+                "parameters": [
+                    {"type": "text", "text": headline[:60]},
+                    {"type": "text", "text": detail[:60]},
+                ],
+            }],
+        },
+    }
+    try:
+        r = requests.post(
+            url,
+            headers={"Authorization": f"Bearer {WHATSAPP_TOKEN}"},
+            json=payload,
+            timeout=15,
+        )
+        if not r.ok:
+            print(f"WhatsApp send failed ({r.status_code}): {r.text[:300]}")
+    except Exception as e:
+        print(f"WhatsApp send failed: {e}")
+
+
+def describe(entry: dict) -> tuple:
+    """Builds the (headline, detail) pair used for both the console log
+    and the WhatsApp template's two variables."""
+    what = {
+        "vistajet": "VistaJet",
+        "military": "Military",
+        "commercial": "Commercial",
+    }[entry["_category"]]
+    headline = f"{what} {entry['callsign']} {entry['direction']}"
+    arrow = "from" if entry["direction"] == "arrival" else "to"
+    detail = f"{entry['time_malta'][-5:]} Malta {arrow} {entry['place']}"
+    if entry.get("likely_repositioning"):
+        detail += " (repositioning?)"
+    return headline, detail
 
 
 # ------------------------------------------------------------------ main --
@@ -276,42 +347,69 @@ def main():
 
     tokens = TokenManager()
     departures = query_flights("departure", tokens, NORMAL_LOOKBACK_HOURS)
+    arrivals = query_flights("arrival", tokens, NORMAL_LOOKBACK_HOURS)
     military_ranges = load_military_ranges()
 
     seen = load_seen()
     history = load_history()
+    total_new = 0
 
-    new_by_cat = {cat: [] for cat in CATEGORIES}
+    # ---- VistaJet: departures + arrivals, merged and time-sorted ----
+    new_vj_dep = [d for d in departures if is_vistajet(d) and flight_key(d) not in seen]
+    new_vj_arr = [a for a in arrivals if is_vistajet(a) and flight_key(a) not in seen]
+
+    vj_batch = []
+    for d in new_vj_dep:
+        flag = looks_like_repositioning(d, arrivals)
+        entry, event_time = record(d, "departure", likely_repositioning=flag)
+        vj_batch.append((event_time, entry))
+    for a in new_vj_arr:
+        entry, event_time = record(a, "arrival")
+        vj_batch.append((event_time, entry))
+
+    if vj_batch:
+        vj_batch.sort(key=lambda pair: pair[0], reverse=True)
+        print(f"{now_malta:%Y-%m-%d %H:%M} - {len(vj_batch)} new VistaJet LMML movement(s):")
+        for _, entry in vj_batch:
+            entry["_category"] = "vistajet"
+            headline, detail = describe(entry)
+            print(f"  {headline} | {detail}")
+            send_whatsapp_alert(headline, detail)
+            del entry["_category"]
+        history["vistajet"] = [e for _, e in vj_batch] + history["vistajet"]
+        for d in new_vj_dep:
+            seen.add(flight_key(d))
+        for a in new_vj_arr:
+            seen.add(flight_key(a))
+        total_new += len(vj_batch)
+
+    # ---- Military / commercial: departures only, unchanged scope ----
+    new_mil, new_other = [], []
     for d in departures:
-        if flight_key(d) in seen:
+        if is_vistajet(d) or flight_key(d) in seen:
             continue
-        new_by_cat[categorise(d, military_ranges)].append(d)
+        (new_mil if is_military(d.get("icao24"), military_ranges) else new_other).append(d)
 
-    total_new = sum(len(v) for v in new_by_cat.values())
-
-    if new_by_cat["vistajet"]:
-        arrivals = query_flights("arrival", tokens, NORMAL_LOOKBACK_HOURS)
-        print(f"{now_malta:%Y-%m-%d %H:%M} - {len(new_by_cat['vistajet'])} new VistaJet LMML departure(s):")
-        for d in new_by_cat["vistajet"]:
-            flag = looks_like_repositioning(d, arrivals)
-            entry, dep_time = record(d, likely_repositioning=flag)
-            print(f"  {entry['callsign']:<10} departed {dep_time:%Y-%m-%d %H:%M} -> {entry['destination']}"
-                  f"{' -- looks repositioned (heuristic, not confirmed)' if flag else ''}")
-            history["vistajet"].insert(0, entry)
-            seen.add(flight_key(d))
-
-    for cat in ("military", "commercial"):
-        if not new_by_cat[cat]:
+    for cat, items, alert in (("military", new_mil, True), ("commercial", new_other, False)):
+        if not items:
             continue
-        print(f"{now_malta:%Y-%m-%d %H:%M} - {len(new_by_cat[cat])} new {cat} LMML departure(s):")
-        for d in new_by_cat[cat]:
-            entry, dep_time = record(d)
-            print(f"  {entry['callsign']:<10} departed {dep_time:%Y-%m-%d %H:%M} -> {entry['destination']}")
-            history[cat].insert(0, entry)
+        batch = [record(d, "departure") for d in items]
+        batch.sort(key=lambda pair: pair[1], reverse=True)
+        print(f"{now_malta:%Y-%m-%d %H:%M} - {len(batch)} new {cat} LMML departure(s):")
+        for entry, _ in batch:
+            entry["_category"] = cat
+            headline, detail = describe(entry)
+            print(f"  {headline} | {detail}")
+            if alert:
+                send_whatsapp_alert(headline, detail)
+            del entry["_category"]
+        history[cat] = [e for e, _ in batch] + history[cat]
+        for d in items:
             seen.add(flight_key(d))
+        total_new += len(batch)
 
     if total_new == 0:
-        print(f"{now_malta:%Y-%m-%d %H:%M} - no new departures in any category.")
+        print(f"{now_malta:%Y-%m-%d %H:%M} - no new movements in any category.")
     else:
         save_seen(seen)
 
