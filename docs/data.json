@@ -1,6 +1,7 @@
 {
   "last_checked_utc": null,
   "last_checked_malta": null,
-  "flights": [],
-  "military":[]
+  "vistajet": [],
+  "military": [],
+  "commercial": []
 }
