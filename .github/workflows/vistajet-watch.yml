@@ -2,17 +2,11 @@ name: VistaJet LMML watch
 
 on:
   schedule:
-    # Malta is CET (UTC+1) in winter and CEST (UTC+2) in summer.
-    # We fire at BOTH possible UTC times for each local target hour;
-    # the script checks true Malta local time and no-ops the "wrong" one,
-    # so this self-adjusts across the DST switch without edits twice a year.
-    - cron: '0 6 * * *'   # 07:00 Malta time (CET / winter)
-    - cron: '0 5 * * *'   # 07:00 Malta time (CEST / summer)
-    - cron: '0 11 * * *'  # 12:00 Malta time (CET / winter)
-    - cron: '0 10 * * *'  # 12:00 Malta time (CEST / summer)
-    - cron: '0 14 * * *'  # 15:00 Malta time (CET / winter)
-    - cron: '0 13 * * *'  # 15:00 Malta time (CEST / summer)
-  workflow_dispatch: {}    # lets you trigger a manual test run from the Actions tab
+    # Run every hour. The script checks Malta local time and only does real
+    # work at 07:00, 12:00, and 15:00 anyway, so this just ensures we don't
+    # miss those windows due to cron timing issues.
+    - cron: '0 * * * *'
+  workflow_dispatch: {}
 
 permissions:
   contents: write   # needed so the workflow can commit updated data back
@@ -43,11 +37,6 @@ jobs:
         run: |
           git config user.name "vistajet-watch-bot"
           git config user.email "actions@users.noreply.github.com"
-          # Only stage files that actually exist - a manual test run outside
-          # the 07:00/12:00/15:00 window, or a real check with nothing new,
-          # can legitimately produce no seen_flights.json update. Trying to
-          # `git add` a file that isn't there is what caused the earlier
-          # "pathspec did not match any files" failure.
           for f in seen_flights.json docs/data.json; do
             [ -f "$f" ] && git add "$f"
           done
