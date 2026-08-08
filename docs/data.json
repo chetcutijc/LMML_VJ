@@ -1,7 +1,400 @@
 {
-  "last_checked_utc": null,
-  "last_checked_malta": null,
+  "last_checked_utc": "2026-08-08T11:57:29.238396+00:00",
+  "last_checked_malta": "2026-08-08 13:57",
   "vistajet": [],
   "military": [],
-  "commercial": []
+  "commercial": [
+    {
+      "callsign": "KMM624",
+      "icao24": "4d2035",
+      "direction": "departure",
+      "time_malta": "2026-08-08 13:03",
+      "place": "Unknown",
+      "discovered_utc": "2026-08-08T11:57:29.237724+00:00"
+    },
+    {
+      "callsign": "EZY58PA",
+      "icao24": "40622b",
+      "direction": "departure",
+      "time_malta": "2026-08-08 12:58",
+      "place": "Unknown",
+      "discovered_utc": "2026-08-08T11:57:29.237742+00:00"
+    },
+    {
+      "callsign": "RYR2PY",
+      "icao24": "4ca647",
+      "direction": "departure",
+      "time_malta": "2026-08-08 12:54",
+      "place": "Unknown",
+      "discovered_utc": "2026-08-08T11:57:29.237751+00:00"
+    },
+    {
+      "callsign": "LOT672",
+      "icao24": "48af11",
+      "direction": "departure",
+      "time_malta": "2026-08-08 12:46",
+      "place": "Unknown",
+      "discovered_utc": "2026-08-08T11:57:29.237771+00:00"
+    },
+    {
+      "callsign": "RUK69HG",
+      "icao24": "407bdc",
+      "direction": "departure",
+      "time_malta": "2026-08-08 12:42",
+      "place": "Unknown",
+      "discovered_utc": "2026-08-08T11:57:29.237780+00:00"
+    },
+    {
+      "callsign": "RYR57TF",
+      "icao24": "4ca251",
+      "direction": "departure",
+      "time_malta": "2026-08-08 12:40",
+      "place": "Unknown",
+      "discovered_utc": "2026-08-08T11:57:29.237787+00:00"
+    },
+    {
+      "callsign": "EZY52RV",
+      "icao24": "406752",
+      "direction": "departure",
+      "time_malta": "2026-08-08 12:29",
+      "place": "Unknown",
+      "discovered_utc": "2026-08-08T11:57:29.237794+00:00"
+    },
+    {
+      "callsign": "RYR6NT",
+      "icao24": "4cad39",
+      "direction": "departure",
+      "time_malta": "2026-08-08 12:17",
+      "place": "Unknown",
+      "discovered_utc": "2026-08-08T11:57:29.237800+00:00"
+    },
+    {
+      "callsign": "RYR2QK",
+      "icao24": "4d24cc",
+      "direction": "departure",
+      "time_malta": "2026-08-08 12:08",
+      "place": "Unknown",
+      "discovered_utc": "2026-08-08T11:57:29.237807+00:00"
+    },
+    {
+      "callsign": "TVF48RW",
+      "icao24": "39de4b",
+      "direction": "departure",
+      "time_malta": "2026-08-08 12:06",
+      "place": "Unknown",
+      "discovered_utc": "2026-08-08T11:57:29.237814+00:00"
+    },
+    {
+      "callsign": "EWG20T",
+      "icao24": "3c4b4e",
+      "direction": "departure",
+      "time_malta": "2026-08-08 11:56",
+      "place": "Unknown",
+      "discovered_utc": "2026-08-08T11:57:29.237823+00:00"
+    },
+    {
+      "callsign": "FLI7123",
+      "icao24": "45c86c",
+      "direction": "departure",
+      "time_malta": "2026-08-08 11:42",
+      "place": "Unknown",
+      "discovered_utc": "2026-08-08T11:57:29.237831+00:00"
+    },
+    {
+      "callsign": "EZY93EJ",
+      "icao24": "406673",
+      "direction": "departure",
+      "time_malta": "2026-08-08 11:38",
+      "place": "Unknown",
+      "discovered_utc": "2026-08-08T11:57:29.237838+00:00"
+    },
+    {
+      "callsign": "EZY79GK",
+      "icao24": "407f61",
+      "direction": "departure",
+      "time_malta": "2026-08-08 11:33",
+      "place": "Unknown",
+      "discovered_utc": "2026-08-08T11:57:29.237845+00:00"
+    },
+    {
+      "callsign": "EZY34RN",
+      "icao24": "406d90",
+      "direction": "departure",
+      "time_malta": "2026-08-08 11:30",
+      "place": "Unknown",
+      "discovered_utc": "2026-08-08T11:57:29.237852+00:00"
+    },
+    {
+      "callsign": "RYR22MM",
+      "icao24": "4d2501",
+      "direction": "departure",
+      "time_malta": "2026-08-08 10:34",
+      "place": "Unknown",
+      "discovered_utc": "2026-08-08T11:57:29.237859+00:00"
+    },
+    {
+      "callsign": "JSD630",
+      "icao24": "472fd0",
+      "direction": "departure",
+      "time_malta": "2026-08-08 10:22",
+      "place": "Unknown",
+      "discovered_utc": "2026-08-08T11:57:29.237865+00:00"
+    },
+    {
+      "callsign": "EJU72TC",
+      "icao24": "440037",
+      "direction": "departure",
+      "time_malta": "2026-08-08 08:02",
+      "place": "LIRI",
+      "discovered_utc": "2026-08-08T11:57:29.237872+00:00"
+    },
+    {
+      "callsign": "RYR7048",
+      "icao24": "4cad39",
+      "direction": "departure",
+      "time_malta": "2026-08-07 23:21",
+      "place": "Unknown",
+      "discovered_utc": "2026-08-08T11:57:29.237878+00:00"
+    },
+    {
+      "callsign": "RYR31QC",
+      "icao24": "4d224d",
+      "direction": "departure",
+      "time_malta": "2026-08-07 22:54",
+      "place": "LIPE",
+      "discovered_utc": "2026-08-08T11:57:29.237885+00:00"
+    },
+    {
+      "callsign": "RYR1278",
+      "icao24": "4cae64",
+      "direction": "departure",
+      "time_malta": "2026-08-07 22:50",
+      "place": "LICA",
+      "discovered_utc": "2026-08-08T11:57:29.237892+00:00"
+    },
+    {
+      "callsign": "WMT747",
+      "icao24": "4d2453",
+      "direction": "departure",
+      "time_malta": "2026-08-07 22:20",
+      "place": "LROP",
+      "discovered_utc": "2026-08-08T11:57:29.237898+00:00"
+    },
+    {
+      "callsign": "RYR8YD",
+      "icao24": "4caf34",
+      "direction": "departure",
+      "time_malta": "2026-08-07 22:18",
+      "place": "EIDW",
+      "discovered_utc": "2026-08-08T11:57:29.237905+00:00"
+    },
+    {
+      "callsign": "EZY75KU",
+      "icao24": "407794",
+      "direction": "departure",
+      "time_malta": "2026-08-07 22:01",
+      "place": "EGPF",
+      "discovered_utc": "2026-08-08T11:57:29.237911+00:00"
+    },
+    {
+      "callsign": "WZZ3636",
+      "icao24": "471d68",
+      "direction": "departure",
+      "time_malta": "2026-08-07 21:56",
+      "place": "LHBP",
+      "discovered_utc": "2026-08-08T11:57:29.237917+00:00"
+    },
+    {
+      "callsign": "RYR6YZ",
+      "icao24": "4d22ae",
+      "direction": "departure",
+      "time_malta": "2026-08-07 21:48",
+      "place": "LOWW",
+      "discovered_utc": "2026-08-08T11:57:29.237924+00:00"
+    },
+    {
+      "callsign": "WMT8LV",
+      "icao24": "4d250b",
+      "direction": "departure",
+      "time_malta": "2026-08-07 21:44",
+      "place": "LRCL",
+      "discovered_utc": "2026-08-08T11:57:29.237930+00:00"
+    },
+    {
+      "callsign": "RYR1DX",
+      "icao24": "4d21fc",
+      "direction": "departure",
+      "time_malta": "2026-08-07 21:30",
+      "place": "LPPR",
+      "discovered_utc": "2026-08-08T11:57:29.237937+00:00"
+    },
+    {
+      "callsign": "AOM212M",
+      "icao24": "020183",
+      "direction": "departure",
+      "time_malta": "2026-08-07 21:18",
+      "place": "LFMN",
+      "discovered_utc": "2026-08-08T11:57:29.237943+00:00"
+    },
+    {
+      "callsign": "RYR78PV",
+      "icao24": "4cae00",
+      "direction": "departure",
+      "time_malta": "2026-08-07 21:05",
+      "place": "LIRF",
+      "discovered_utc": "2026-08-08T11:57:29.237949+00:00"
+    },
+    {
+      "callsign": "ITY885",
+      "icao24": "4cae1d",
+      "direction": "departure",
+      "time_malta": "2026-08-07 20:57",
+      "place": "LIRF",
+      "discovered_utc": "2026-08-08T11:57:29.237955+00:00"
+    },
+    {
+      "callsign": "RYR12BX",
+      "icao24": "4cad3a",
+      "direction": "departure",
+      "time_malta": "2026-08-07 20:55",
+      "place": "EPKK",
+      "discovered_utc": "2026-08-08T11:57:29.237961+00:00"
+    },
+    {
+      "callsign": "KMM454",
+      "icao24": "4d2035",
+      "direction": "departure",
+      "time_malta": "2026-08-07 20:48",
+      "place": "LFLL",
+      "discovered_utc": "2026-08-08T11:57:29.237967+00:00"
+    },
+    {
+      "callsign": "RYR3RM",
+      "icao24": "4d2350",
+      "direction": "departure",
+      "time_malta": "2026-08-07 20:41",
+      "place": "ELLX",
+      "discovered_utc": "2026-08-08T11:57:29.237973+00:00"
+    },
+    {
+      "callsign": "RYR9UD",
+      "icao24": "48c2ae",
+      "direction": "departure",
+      "time_malta": "2026-08-07 20:38",
+      "place": "EPWR",
+      "discovered_utc": "2026-08-08T11:57:29.237979+00:00"
+    },
+    {
+      "callsign": "EZY86JC",
+      "icao24": "407fc7",
+      "direction": "departure",
+      "time_malta": "2026-08-07 20:31",
+      "place": "EGMC",
+      "discovered_utc": "2026-08-08T11:57:29.237985+00:00"
+    },
+    {
+      "callsign": "THY4BV",
+      "icao24": "4ba9a9",
+      "direction": "departure",
+      "time_malta": "2026-08-07 20:22",
+      "place": "LTFM",
+      "discovered_utc": "2026-08-08T11:57:29.237991+00:00"
+    },
+    {
+      "callsign": "WZZ427",
+      "icao24": "4d2067",
+      "direction": "departure",
+      "time_malta": "2026-08-07 20:04",
+      "place": "EPWA",
+      "discovered_utc": "2026-08-08T11:57:29.237997+00:00"
+    },
+    {
+      "callsign": "RYR9MZ",
+      "icao24": "4caecc",
+      "direction": "departure",
+      "time_malta": "2026-08-07 19:55",
+      "place": "LEBL",
+      "discovered_utc": "2026-08-08T11:57:29.238003+00:00"
+    },
+    {
+      "callsign": "RYR7262",
+      "icao24": "4d2237",
+      "direction": "departure",
+      "time_malta": "2026-08-07 19:37",
+      "place": "LROP",
+      "discovered_utc": "2026-08-08T11:57:29.238009+00:00"
+    },
+    {
+      "callsign": "EZY25CQ",
+      "icao24": "407e5f",
+      "direction": "departure",
+      "time_malta": "2026-08-07 19:15",
+      "place": "EGKK",
+      "discovered_utc": "2026-08-08T11:57:29.238015+00:00"
+    },
+    {
+      "callsign": "EFW17EA",
+      "icao24": "400afe",
+      "direction": "departure",
+      "time_malta": "2026-08-07 19:11",
+      "place": "EGKK",
+      "discovered_utc": "2026-08-08T11:57:29.238026+00:00"
+    },
+    {
+      "callsign": "BCS7925",
+      "icao24": "440bcf",
+      "direction": "departure",
+      "time_malta": "2026-08-07 19:05",
+      "place": "LIPE",
+      "discovered_utc": "2026-08-08T11:57:29.238032+00:00"
+    },
+    {
+      "callsign": "TAY1LA",
+      "icao24": "440ced",
+      "direction": "departure",
+      "time_malta": "2026-08-07 19:03",
+      "place": "EDDF",
+      "discovered_utc": "2026-08-08T11:57:29.238038+00:00"
+    },
+    {
+      "callsign": "KMM614",
+      "icao24": "4d24ba",
+      "direction": "departure",
+      "time_malta": "2026-08-07 18:53",
+      "place": "LIRF",
+      "discovered_utc": "2026-08-08T11:57:29.238044+00:00"
+    },
+    {
+      "callsign": "DLH7JT",
+      "icao24": "3c6652",
+      "direction": "departure",
+      "time_malta": "2026-08-07 18:40",
+      "place": "EDDM",
+      "discovered_utc": "2026-08-08T11:57:29.238050+00:00"
+    },
+    {
+      "callsign": "BRD7142",
+      "icao24": "4d21be",
+      "direction": "departure",
+      "time_malta": "2026-08-07 18:35",
+      "place": "LIRF",
+      "discovered_utc": "2026-08-08T11:57:29.238056+00:00"
+    },
+    {
+      "callsign": "RYR64FN",
+      "icao24": "4cadf6",
+      "direction": "departure",
+      "time_malta": "2026-08-07 18:07",
+      "place": "EGSS",
+      "discovered_utc": "2026-08-08T11:57:29.238062+00:00"
+    },
+    {
+      "callsign": "RYR4U",
+      "icao24": "4cad10",
+      "direction": "departure",
+      "time_malta": "2026-08-07 18:01",
+      "place": "LMML",
+      "discovered_utc": "2026-08-08T11:57:29.238068+00:00"
+    }
+  ]
 }
