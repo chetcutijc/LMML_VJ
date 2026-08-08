@@ -1,0 +1,25 @@
+{
+  "name": "LMML Departures Watch",
+  "short_name": "LMML Watch",
+  "description": "Real-time tracking of VistaJet, military, and commercial departures at Malta International Airport",
+  "start_url": "/LMML_VJ/",
+  "scope": "/LMML_VJ/",
+  "display": "standalone",
+  "background_color": "#0A0C0E",
+  "theme_color": "#C4142A",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "aircraft-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "aircraft-icon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
