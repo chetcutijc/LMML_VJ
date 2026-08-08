@@ -61,8 +61,8 @@ MILITARY_RANGES_URL = (
     "https://github.com/wiedehopf/tar1090-db/raw/refs/heads/master/ranges.json"
 )
 MALTA_TZ = ZoneInfo("Europe/Malta")
-TARGET_HOURS = (7, 12, 15)           # local times this should actually run at
-TOLERANCE_MINUTES = 15               # "close enough" to a target hour
+TARGET_HOURS = (7, 12, 13, 14, 15)           # local times this should actually run at
+TOLERANCE_MINUTES = 25               # "close enough" to a target hour
 NORMAL_LOOKBACK_HOURS = 20           # covers the longest gap between checks
 WIDE_LOOKBACK_HOURS = 50             # fallback if OpenSky rejects the short window
 SHORT_GROUND_HOURS = 3               # below this, flag a VJ departure as "looks repositioned"
