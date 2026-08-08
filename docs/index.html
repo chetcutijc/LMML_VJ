@@ -2,8 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>LMML Departures Watch</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="aircraft-icon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#C4142A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LMML Watch">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -155,6 +161,11 @@
     text-transform:uppercase;
     letter-spacing:.05em;
   }
+  .row .aircraft{
+    font-size:.8rem;
+    color:var(--silver-dim);
+    font-family:var(--mono);
+  }
   .row .date{
     margin-left:auto;
     color:var(--muted);
@@ -203,8 +214,13 @@
 </head>
 <body>
 <main>
-  <p class="eyebrow">Malta &middot; LMML</p>
-  <h1>Departures</h1>
+  <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
+    <img src="aircraft-icon.svg" alt="Aircraft icon" width="48" height="48" style="flex-shrink:0;">
+    <div>
+      <p class="eyebrow" style="margin-bottom:4px;">Malta &middot; LMML</p>
+      <h1 style="margin:0;">Departures Watch</h1>
+    </div>
+  </div>
   <p class="lede">Three things this watches for at Malta: <strong>VistaJet</strong> arrivals and departures, anything flagged <strong>military</strong> by ICAO24 address (departures only), and <strong>commercial</strong> &mdash; everything else departing LMML. None of the three lists are exhaustive &mdash; see the note below.</p>
 
   <div class="status">
@@ -289,12 +305,14 @@
         ? (isArrival ? 'origin unclear' : 'destination unclear')
         : escapeHtml(place);
       const flagged = opts.showFlag && !isArrival && f.likely_repositioning;
+      const aircraft = f.aircraft_type ? `<span class="aircraft">${escapeHtml(f.aircraft_type)}</span>` : '';
       return `
         <li class="row${flagged ? ' flagged' : ''}">
           <span class="time">${escapeHtml(timePart || '--:--')}</span>
           <span class="flight">${escapeHtml(f.callsign)}</span>
           ${isArrival ? '<span class="dir">arr</span>' : ''}
           <span class="date">${escapeHtml(datePart || '')}</span>
+          ${aircraft}
           <span class="dest">${isArrival ? 'from' : 'to'} ${placeLabel}</span>
           ${flagged ? '<span class="tag">possible repositioning &middot; unconfirmed</span>' : ''}
         </li>`;
