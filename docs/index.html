@@ -225,8 +225,9 @@
 
   <div class="status">
     <span><span class="dot" aria-hidden="true"></span><span id="last-checked">Loading&hellip;</span></span>
+    <span id="elapsed" style="font-size:.75rem; color:var(--muted);">—</span>
     <span id="next-check"></span>
-    <button id="refresh" type="button">Refresh</button>
+    <button id="refresh" type="button">Refresh now</button>
   </div>
 
   <section>
@@ -261,6 +262,7 @@
 
 <script>
   const TARGET_HOURS = [7, 12, 15];
+  let lastDataTime = null;
 
   function maltaNow() {
     const parts = new Intl.DateTimeFormat('en-GB', {
@@ -277,6 +279,38 @@
       if (t * 60 > nowMinutes) return `next check ~${String(t).padStart(2, '0')}:00`;
     }
     return `next check ~07:00 tomorrow`;
+  }
+
+  function countdownToNextCheck() {
+    const now = new Date();
+    const malta = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/Malta', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+    }).formatToParts(now);
+    const get = (t) => Number(malta.find(p => p.type === t).value);
+    const h = get('hour'), m = get('minute'), s = get('second');
+    
+    const nowMinutes = h * 60 + m + s / 60;
+    let nextTarget = null;
+    for (const t of TARGET_HOURS) {
+      if (t * 60 > nowMinutes) {
+        nextTarget = t * 60;
+        break;
+      }
+    }
+    if (!nextTarget) nextTarget = (7 * 60) + (24 * 60); // Tomorrow 7am
+    
+    const minutesUntil = Math.floor(nextTarget - nowMinutes);
+    const secondsUntil = Math.floor((nextTarget - nowMinutes) * 60) % 60;
+    return `${minutesUntil}m ${secondsUntil}s until next check`;
+  }
+
+  function elapsedSinceUpdate() {
+    if (!lastDataTime) return '—';
+    const seconds = Math.floor((Date.now() - lastDataTime) / 1000);
+    if (seconds < 60) return `${seconds}s ago`;
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    return 'over 1h ago';
   }
 
   function escapeHtml(s) {
@@ -320,23 +354,28 @@
   }
 
   function render(data) {
+    lastDataTime = Date.now();
     document.getElementById('last-checked').textContent = data.last_checked_malta
-      ? `last checked ${data.last_checked_malta} Malta time`
+      ? `checked ${data.last_checked_malta} Malta`
       : 'not checked yet';
-    document.getElementById('next-check').textContent = nextCheckLabel();
 
     renderBoard('board-vistajet', 'count-vistajet', data.vistajet, {
       showFlag: true,
-      emptyMessage: 'No VistaJet arrivals or departures logged yet. This checks LMML three times a day — the board fills in after the next run.',
+      emptyMessage: 'No VistaJet arrivals or departures logged yet.',
     });
     renderBoard('board-military', 'count-military', data.military, {
       showFlag: false,
-      emptyMessage: 'No military departures logged yet. Only aircraft broadcasting ADS-B can show up here at all.',
+      emptyMessage: 'No military departures logged yet.',
     });
     renderBoard('board-commercial', 'count-commercial', data.commercial, {
       showFlag: false,
       emptyMessage: 'No commercial departures logged yet.',
     });
+  }
+
+  function updateTimers() {
+    document.getElementById('next-check').textContent = nextCheckLabel() + ' (' + countdownToNextCheck() + ')';
+    document.getElementById('elapsed').textContent = elapsedSinceUpdate();
   }
 
   async function load() {
@@ -350,7 +389,16 @@
   }
 
   document.getElementById('refresh').addEventListener('click', load);
+  
+  // Initial load and timers
   load();
+  updateTimers();
+  
+  // Auto-refresh every 60 seconds
+  setInterval(load, 60000);
+  
+  // Update countdown and elapsed time every second
+  setInterval(updateTimers, 1000);
 </script>
 </body>
 </html>
