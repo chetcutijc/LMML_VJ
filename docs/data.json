@@ -1,6 +1,6 @@
 {
-  "last_checked_utc": "2026-10-26T05:56:59.374846+00:00",
-  "last_checked_malta": "2026-10-26 06:56",
+  "last_checked_utc": "2026-10-29T14:05:08.469299+00:00",
+  "last_checked_malta": "2026-10-29 15:05",
   "vistajet": [
     {
       "callsign": "VJT678",
@@ -49,576 +49,441 @@
       "aircraft_type": "Unknown",
       "discovered_utc": "2026-10-06T10:02:39.744598+00:00",
       "likely_repositioning": false
-    },
-    {
-      "callsign": "VJT796",
-      "icao24": "4d20cd",
-      "direction": "arrival",
-      "time_malta": "2026-09-28 00:26",
-      "place": "Unknown",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-09-28T05:05:57.612335+00:00"
-    },
-    {
-      "callsign": "VJT710",
-      "icao24": "4d205c",
-      "direction": "arrival",
-      "time_malta": "2026-09-27 13:54",
-      "place": "LPCS",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-09-28T05:05:57.612362+00:00"
-    },
-    {
-      "callsign": "VJT884",
-      "icao24": "4d20d0",
-      "direction": "arrival",
-      "time_malta": "2026-09-26 16:49",
-      "place": "LIMC",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-09-27T05:04:02.971938+00:00"
     }
   ],
   "military": [],
   "commercial": [
     {
-      "callsign": "RYR1723",
-      "icao24": "4cae62",
+      "callsign": "EXS89R",
+      "icao24": "4078fe",
       "direction": "departure",
-      "time_malta": "2026-10-26 06:53",
+      "time_malta": "2026-10-29 15:03",
       "place": "Unknown",
       "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373613+00:00"
+      "discovered_utc": "2026-10-29T14:05:08.468545+00:00"
     },
     {
-      "callsign": "RYR56XD",
-      "icao24": "4d234d",
+      "callsign": "OYA320",
+      "icao24": "01021e",
       "direction": "departure",
-      "time_malta": "2026-10-26 06:47",
+      "time_malta": "2026-10-29 15:02",
       "place": "Unknown",
       "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373629+00:00"
+      "discovered_utc": "2026-10-29T14:05:08.468563+00:00"
     },
     {
-      "callsign": "RYR9875",
-      "icao24": "4d2238",
-      "direction": "departure",
-      "time_malta": "2026-10-26 06:45",
-      "place": "Unknown",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373638+00:00"
-    },
-    {
-      "callsign": "RYR3833",
-      "icao24": "4d226c",
-      "direction": "departure",
-      "time_malta": "2026-10-26 06:32",
-      "place": "Unknown",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373666+00:00"
-    },
-    {
-      "callsign": "RYR8ZN",
-      "icao24": "4cadf5",
-      "direction": "departure",
-      "time_malta": "2026-10-26 06:25",
-      "place": "Unknown",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373678+00:00"
-    },
-    {
-      "callsign": "KMM612",
-      "icao24": "4d2035",
-      "direction": "departure",
-      "time_malta": "2026-10-26 06:23",
-      "place": "Unknown",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373685+00:00"
-    },
-    {
-      "callsign": "KMM478A",
-      "icao24": "4d2038",
-      "direction": "departure",
-      "time_malta": "2026-10-26 06:20",
-      "place": "Unknown",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373696+00:00"
-    },
-    {
-      "callsign": "RYR87DN",
-      "icao24": "4ca4f2",
-      "direction": "departure",
-      "time_malta": "2026-10-26 06:09",
-      "place": "Unknown",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373705+00:00"
-    },
-    {
-      "callsign": "RYR92JQ",
-      "icao24": "4cafcf",
-      "direction": "departure",
-      "time_malta": "2026-10-26 05:48",
-      "place": "Unknown",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373712+00:00"
-    },
-    {
-      "callsign": "RYR672Q",
-      "icao24": "4cadf7",
-      "direction": "departure",
-      "time_malta": "2026-10-26 05:46",
-      "place": "Unknown",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373719+00:00"
-    },
-    {
-      "callsign": "WMT3WC",
-      "icao24": "471dab",
-      "direction": "departure",
-      "time_malta": "2026-10-25 22:30",
-      "place": "LROP",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373726+00:00"
-    },
-    {
-      "callsign": "KMM3642",
-      "icao24": "4d21dc",
-      "direction": "departure",
-      "time_malta": "2026-10-25 22:25",
-      "place": "LICC",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373733+00:00"
-    },
-    {
-      "callsign": "RYR35SD",
-      "icao24": "4ca61f",
-      "direction": "departure",
-      "time_malta": "2026-10-25 22:06",
-      "place": "LIME",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373740+00:00"
-    },
-    {
-      "callsign": "WZZ5757",
-      "icao24": "471e5f",
-      "direction": "departure",
-      "time_malta": "2026-10-25 21:48",
-      "place": "LYBE",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373746+00:00"
-    },
-    {
-      "callsign": "KMM614",
-      "icao24": "4d24ba",
-      "direction": "departure",
-      "time_malta": "2026-10-25 21:40",
-      "place": "LIRF",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373754+00:00"
-    },
-    {
-      "callsign": "WZZ677",
-      "icao24": "4d24ad",
-      "direction": "departure",
-      "time_malta": "2026-10-25 20:50",
-      "place": "LHBP",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373760+00:00"
-    },
-    {
-      "callsign": "RYR9PG",
-      "icao24": "48c2a0",
-      "direction": "departure",
-      "time_malta": "2026-10-25 20:07",
-      "place": "EPPO",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373769+00:00"
-    },
-    {
-      "callsign": "THY8UT",
-      "icao24": "4bb185",
-      "direction": "departure",
-      "time_malta": "2026-10-25 20:03",
-      "place": "LTFM",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373776+00:00"
-    },
-    {
-      "callsign": "RYR1DW",
-      "icao24": "4cae62",
-      "direction": "departure",
-      "time_malta": "2026-10-25 20:00",
-      "place": "LEBL",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373783+00:00"
-    },
-    {
-      "callsign": "RYR8L",
+      "callsign": "RYR92UW",
       "icao24": "4d22b4",
       "direction": "departure",
-      "time_malta": "2026-10-25 19:58",
-      "place": "LDZA",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373792+00:00"
-    },
-    {
-      "callsign": "WZZ9854",
-      "icao24": "4d2448",
-      "direction": "departure",
-      "time_malta": "2026-10-25 19:52",
-      "place": "EPWA",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373799+00:00"
-    },
-    {
-      "callsign": "RYR65SU",
-      "icao24": "4ca761",
-      "direction": "departure",
-      "time_malta": "2026-10-25 19:29",
-      "place": "EGGP",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373805+00:00"
-    },
-    {
-      "callsign": "RYR86TC",
-      "icao24": "4d226c",
-      "direction": "departure",
-      "time_malta": "2026-10-25 19:27",
-      "place": "LEPA",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373812+00:00"
-    },
-    {
-      "callsign": "RYR2FV",
-      "icao24": "4d2382",
-      "direction": "departure",
-      "time_malta": "2026-10-25 19:23",
-      "place": "LEMD",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373818+00:00"
-    },
-    {
-      "callsign": "EXS92YR",
-      "icao24": "408384",
-      "direction": "departure",
-      "time_malta": "2026-10-25 19:21",
-      "place": "EGKK",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373825+00:00"
-    },
-    {
-      "callsign": "SWR70T",
-      "icao24": "4b17fb",
-      "direction": "departure",
-      "time_malta": "2026-10-25 19:15",
-      "place": "LSZH",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373832+00:00"
-    },
-    {
-      "callsign": "RYR35HV",
-      "icao24": "4ca4f2",
-      "direction": "departure",
-      "time_malta": "2026-10-25 19:11",
-      "place": "LOWW",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373841+00:00"
-    },
-    {
-      "callsign": "RYR7JC",
-      "icao24": "4cadb8",
-      "direction": "departure",
-      "time_malta": "2026-10-25 19:04",
-      "place": "EBCI",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373847+00:00"
-    },
-    {
-      "callsign": "RYR882Q",
-      "icao24": "4cadf7",
-      "direction": "departure",
-      "time_malta": "2026-10-25 18:57",
-      "place": "LFOB",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373854+00:00"
-    },
-    {
-      "callsign": "RYR66QB",
-      "icao24": "48c231",
-      "direction": "departure",
-      "time_malta": "2026-10-25 18:52",
-      "place": "EKCH",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373861+00:00"
-    },
-    {
-      "callsign": "TVF32PG",
-      "icao24": "39de58",
-      "direction": "departure",
-      "time_malta": "2026-10-25 18:50",
-      "place": "LFPO",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373869+00:00"
-    },
-    {
-      "callsign": "RYR67WY",
-      "icao24": "4cadf5",
-      "direction": "departure",
-      "time_malta": "2026-10-25 18:47",
-      "place": "LFML",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373876+00:00"
-    },
-    {
-      "callsign": "KMM454",
-      "icao24": "4d2035",
-      "direction": "departure",
-      "time_malta": "2026-10-25 18:43",
-      "place": "LFLL",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373884+00:00"
-    },
-    {
-      "callsign": "RYR80TL",
-      "icao24": "4cadfd",
-      "direction": "departure",
-      "time_malta": "2026-10-25 18:31",
-      "place": "EPKK",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373891+00:00"
-    },
-    {
-      "callsign": "DLH2493",
-      "icao24": "3c6759",
-      "direction": "departure",
-      "time_malta": "2026-10-25 18:28",
-      "place": "EDDM",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373898+00:00"
-    },
-    {
-      "callsign": "KMM376",
-      "icao24": "4d2038",
-      "direction": "departure",
-      "time_malta": "2026-10-25 18:17",
-      "place": "EDDB",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373904+00:00"
-    },
-    {
-      "callsign": "JSY2W",
-      "icao24": "501c2b",
-      "direction": "departure",
-      "time_malta": "2026-10-25 17:57",
-      "place": "LDZA",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373911+00:00"
-    },
-    {
-      "callsign": "RYR977V",
-      "icao24": "4d234d",
-      "direction": "departure",
-      "time_malta": "2026-10-25 17:47",
-      "place": "EYVI",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373917+00:00"
-    },
-    {
-      "callsign": "KMM102",
-      "icao24": "4d24de",
-      "direction": "departure",
-      "time_malta": "2026-10-25 17:01",
-      "place": "EGLL",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373924+00:00"
-    },
-    {
-      "callsign": "DLH1AP",
-      "icao24": "3c6489",
-      "direction": "departure",
-      "time_malta": "2026-10-25 16:51",
-      "place": "EDDF",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373931+00:00"
-    },
-    {
-      "callsign": "KMM420",
-      "icao24": "4d22ab",
-      "direction": "departure",
-      "time_malta": "2026-10-25 16:37",
-      "place": "EBBR",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373937+00:00"
-    },
-    {
-      "callsign": "9HFAE",
-      "icao24": "4d208d",
-      "direction": "departure",
-      "time_malta": "2026-10-25 16:15",
-      "place": "LMML",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373944+00:00"
-    },
-    {
-      "callsign": "9HEFA",
-      "icao24": "4d21ff",
-      "direction": "departure",
-      "time_malta": "2026-10-25 16:12",
-      "place": "LMML",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373950+00:00"
-    },
-    {
-      "callsign": "MGH1975",
-      "icao24": "4bb4e1",
-      "direction": "departure",
-      "time_malta": "2026-10-25 16:06",
-      "place": "EDDL",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373957+00:00"
-    },
-    {
-      "callsign": "RYR8ZN",
-      "icao24": "4cadc2",
-      "direction": "departure",
-      "time_malta": "2026-10-25 15:57",
-      "place": "EVRA",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373963+00:00"
-    },
-    {
-      "callsign": "KMM308",
-      "icao24": "4d21dc",
-      "direction": "departure",
-      "time_malta": "2026-10-25 15:55",
-      "place": "EDDM",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373972+00:00"
-    },
-    {
-      "callsign": "RYR9W",
-      "icao24": "4cadb8",
-      "direction": "departure",
-      "time_malta": "2026-10-25 15:40",
-      "place": "LICZ",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373981+00:00"
-    },
-    {
-      "callsign": "RYR78PG",
-      "icao24": "4cae62",
-      "direction": "departure",
-      "time_malta": "2026-10-25 15:13",
-      "place": "LIPQ",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373988+00:00"
-    },
-    {
-      "callsign": "RYR1775",
-      "icao24": "4cadf7",
-      "direction": "departure",
-      "time_malta": "2026-10-25 15:08",
+      "time_malta": "2026-10-29 15:01",
       "place": "Unknown",
       "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.373995+00:00"
-    },
-    {
-      "callsign": "KMM490",
-      "icao24": "4d24ba",
-      "direction": "departure",
-      "time_malta": "2026-10-25 15:05",
-      "place": "LSZH",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.374001+00:00"
-    },
-    {
-      "callsign": "KMM3466",
-      "icao24": "4d21a2",
-      "direction": "departure",
-      "time_malta": "2026-10-25 14:51",
-      "place": "LFPG",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.374008+00:00"
+      "discovered_utc": "2026-10-29T14:05:08.468572+00:00"
     },
     {
       "callsign": "UAE110",
-      "icao24": "8963da",
+      "icao24": "8963df",
       "direction": "departure",
-      "time_malta": "2026-10-25 14:48",
-      "place": "LCLK",
+      "time_malta": "2026-10-29 14:58",
+      "place": "Unknown",
       "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.374014+00:00"
+      "discovered_utc": "2026-10-29T14:05:08.468581+00:00"
     },
     {
-      "callsign": "RYR9ED",
-      "icao24": "4d226c",
+      "callsign": "RYR4EL",
+      "icao24": "48c1a1",
       "direction": "departure",
-      "time_malta": "2026-10-25 14:42",
-      "place": "LIPS",
+      "time_malta": "2026-10-29 14:53",
+      "place": "Unknown",
       "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.374021+00:00"
+      "discovered_utc": "2026-10-29T14:05:08.468588+00:00"
     },
     {
-      "callsign": "9HFAE",
-      "icao24": "4d208d",
+      "callsign": "KMM490",
+      "icao24": "4d21dc",
       "direction": "departure",
-      "time_malta": "2026-10-25 14:41",
-      "place": "LMML",
+      "time_malta": "2026-10-29 14:39",
+      "place": "Unknown",
       "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.374027+00:00"
+      "discovered_utc": "2026-10-29T14:05:08.468593+00:00"
     },
     {
-      "callsign": "RYR446B",
-      "icao24": "4cadc4",
+      "callsign": "THY6415",
+      "icao24": "4b9c63",
       "direction": "departure",
-      "time_malta": "2026-10-25 14:34",
-      "place": "EDDK",
+      "time_malta": "2026-10-29 14:37",
+      "place": "Unknown",
       "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.374034+00:00"
+      "discovered_utc": "2026-10-29T14:05:08.468599+00:00"
     },
     {
-      "callsign": "VLG6QQ",
-      "icao24": "343386",
+      "callsign": "EXS6CD",
+      "icao24": "4077ba",
       "direction": "departure",
-      "time_malta": "2026-10-25 14:31",
-      "place": "LEBL",
+      "time_malta": "2026-10-29 14:30",
+      "place": "Unknown",
       "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.374041+00:00"
-    },
-    {
-      "callsign": "WMT9VN",
-      "icao24": "4d2420",
-      "direction": "departure",
-      "time_malta": "2026-10-25 14:28",
-      "place": "LIRF",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.374047+00:00"
-    },
-    {
-      "callsign": "RYR6DZ",
-      "icao24": "4ca816",
-      "direction": "departure",
-      "time_malta": "2026-10-25 14:23",
-      "place": "EDJA",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.374054+00:00"
-    },
-    {
-      "callsign": "DLH7AH",
-      "icao24": "3c6485",
-      "direction": "departure",
-      "time_malta": "2026-10-25 14:02",
-      "place": "EDDF",
-      "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.374060+00:00"
+      "discovered_utc": "2026-10-29T14:05:08.468606+00:00"
     },
     {
       "callsign": "RYR9HZ",
-      "icao24": "4d234d",
+      "icao24": "4ca56b",
       "direction": "departure",
-      "time_malta": "2026-10-25 13:57",
+      "time_malta": "2026-10-29 14:26",
       "place": "Unknown",
       "aircraft_type": "Unknown",
-      "discovered_utc": "2026-10-26T05:56:59.374072+00:00"
+      "discovered_utc": "2026-10-29T14:05:08.468611+00:00"
+    },
+    {
+      "callsign": "EXS23L",
+      "icao24": "4070e5",
+      "direction": "departure",
+      "time_malta": "2026-10-29 14:20",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468616+00:00"
+    },
+    {
+      "callsign": "RYR96RU",
+      "icao24": "48c130",
+      "direction": "departure",
+      "time_malta": "2026-10-29 14:13",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468622+00:00"
+    },
+    {
+      "callsign": "RYR9LT",
+      "icao24": "4cae67",
+      "direction": "departure",
+      "time_malta": "2026-10-29 14:09",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468627+00:00"
+    },
+    {
+      "callsign": "DLH7AH",
+      "icao24": "3c6662",
+      "direction": "departure",
+      "time_malta": "2026-10-29 14:06",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468632+00:00"
+    },
+    {
+      "callsign": "RYR43UV",
+      "icao24": "4cae94",
+      "direction": "departure",
+      "time_malta": "2026-10-29 13:47",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468637+00:00"
+    },
+    {
+      "callsign": "EZY89LZ",
+      "icao24": "408386",
+      "direction": "departure",
+      "time_malta": "2026-10-29 13:33",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468642+00:00"
+    },
+    {
+      "callsign": "EZY92RC",
+      "icao24": "407e63",
+      "direction": "departure",
+      "time_malta": "2026-10-29 13:16",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468650+00:00"
+    },
+    {
+      "callsign": "TVF32PG",
+      "icao24": "39d317",
+      "direction": "departure",
+      "time_malta": "2026-10-29 13:11",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468656+00:00"
+    },
+    {
+      "callsign": "EFW12LS",
+      "icao24": "400ceb",
+      "direction": "departure",
+      "time_malta": "2026-10-29 13:02",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468661+00:00"
+    },
+    {
+      "callsign": "EZY57JU",
+      "icao24": "40756b",
+      "direction": "departure",
+      "time_malta": "2026-10-29 12:59",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468666+00:00"
+    },
+    {
+      "callsign": "EXS8N",
+      "icao24": "40823d",
+      "direction": "departure",
+      "time_malta": "2026-10-29 12:56",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468672+00:00"
+    },
+    {
+      "callsign": "EXS4L",
+      "icao24": "408352",
+      "direction": "departure",
+      "time_malta": "2026-10-29 12:51",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468678+00:00"
+    },
+    {
+      "callsign": "SAS2768",
+      "icao24": "4ca536",
+      "direction": "departure",
+      "time_malta": "2026-10-29 12:38",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468683+00:00"
+    },
+    {
+      "callsign": "RYR65SU",
+      "icao24": "4d2250",
+      "direction": "departure",
+      "time_malta": "2026-10-29 12:17",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468689+00:00"
+    },
+    {
+      "callsign": "EIN4GM",
+      "icao24": "4ca63b",
+      "direction": "departure",
+      "time_malta": "2026-10-29 12:12",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468694+00:00"
+    },
+    {
+      "callsign": "EXS52BL",
+      "icao24": "40717e",
+      "direction": "departure",
+      "time_malta": "2026-10-29 12:09",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468699+00:00"
+    },
+    {
+      "callsign": "EZY73EB",
+      "icao24": "407838",
+      "direction": "departure",
+      "time_malta": "2026-10-29 12:00",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468704+00:00"
+    },
+    {
+      "callsign": "RYR3TW",
+      "icao24": "4caff7",
+      "direction": "departure",
+      "time_malta": "2026-10-29 11:57",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468718+00:00"
+    },
+    {
+      "callsign": "RYR6PN",
+      "icao24": "4cae4a",
+      "direction": "departure",
+      "time_malta": "2026-10-29 11:54",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468725+00:00"
+    },
+    {
+      "callsign": "EXS94A",
+      "icao24": "4070ea",
+      "direction": "departure",
+      "time_malta": "2026-10-29 11:50",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468731+00:00"
+    },
+    {
+      "callsign": "DAK352",
+      "icao24": "4d20db",
+      "direction": "departure",
+      "time_malta": "2026-10-29 08:17",
+      "place": "HLLT",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468736+00:00"
+    },
+    {
+      "callsign": "RYR35SD",
+      "icao24": "4ca625",
+      "direction": "departure",
+      "time_malta": "2026-10-28 22:46",
+      "place": "LIME",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468741+00:00"
+    },
+    {
+      "callsign": "RYR45CM",
+      "icao24": "4ca73d",
+      "direction": "departure",
+      "time_malta": "2026-10-28 22:42",
+      "place": "LICC",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468746+00:00"
+    },
+    {
+      "callsign": "RYR98FM",
+      "icao24": "4cadc4",
+      "direction": "departure",
+      "time_malta": "2026-10-28 22:37",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468751+00:00"
+    },
+    {
+      "callsign": "RYR6YA",
+      "icao24": "48ea4d",
+      "direction": "departure",
+      "time_malta": "2026-10-28 22:13",
+      "place": "LZIB",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468756+00:00"
+    },
+    {
+      "callsign": "RYR3833",
+      "icao24": "4ca56b",
+      "direction": "departure",
+      "time_malta": "2026-10-28 21:35",
+      "place": "LBLS",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468761+00:00"
+    },
+    {
+      "callsign": "WZZ677",
+      "icao24": "471d64",
+      "direction": "departure",
+      "time_malta": "2026-10-28 20:50",
+      "place": "LHBP",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468766+00:00"
+    },
+    {
+      "callsign": "RYR265F",
+      "icao24": "4caff7",
+      "direction": "departure",
+      "time_malta": "2026-10-28 20:47",
+      "place": "EIDW",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468771+00:00"
+    },
+    {
+      "callsign": "RYR38FT",
+      "icao24": "48c1a7",
+      "direction": "departure",
+      "time_malta": "2026-10-28 20:32",
+      "place": "EPWR",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468776+00:00"
+    },
+    {
+      "callsign": "RYR9HZ",
+      "icao24": "4cadf0",
+      "direction": "departure",
+      "time_malta": "2026-10-28 20:29",
+      "place": "Unknown",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468781+00:00"
+    },
+    {
+      "callsign": "RYR35TU",
+      "icao24": "4cae94",
+      "direction": "departure",
+      "time_malta": "2026-10-28 20:23",
+      "place": "LGTS",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468786+00:00"
+    },
+    {
+      "callsign": "RYR8ZY",
+      "icao24": "4ca856",
+      "direction": "departure",
+      "time_malta": "2026-10-28 20:22",
+      "place": "ESSA",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468793+00:00"
+    },
+    {
+      "callsign": "EZY98AW",
+      "icao24": "40690a",
+      "direction": "departure",
+      "time_malta": "2026-10-28 20:20",
+      "place": "EGNT",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468798+00:00"
+    },
+    {
+      "callsign": "WZZ9854",
+      "icao24": "4d245f",
+      "direction": "departure",
+      "time_malta": "2026-10-28 20:16",
+      "place": "EPWA",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468803+00:00"
+    },
+    {
+      "callsign": "THY8UT",
+      "icao24": "4bb208",
+      "direction": "departure",
+      "time_malta": "2026-10-28 20:00",
+      "place": "LTFM",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468808+00:00"
+    },
+    {
+      "callsign": "RYR8L",
+      "icao24": "4cae64",
+      "direction": "departure",
+      "time_malta": "2026-10-28 19:32",
+      "place": "LDZB",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468813+00:00"
+    },
+    {
+      "callsign": "RYR67DV",
+      "icao24": "4d24eb",
+      "direction": "departure",
+      "time_malta": "2026-10-28 19:28",
+      "place": "EGSS",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468819+00:00"
+    },
+    {
+      "callsign": "EZY73EB",
+      "icao24": "40643c",
+      "direction": "departure",
+      "time_malta": "2026-10-28 19:23",
+      "place": "EGCC",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468826+00:00"
+    },
+    {
+      "callsign": "TAY8FO",
+      "icao24": "440d90",
+      "direction": "departure",
+      "time_malta": "2026-10-28 19:20",
+      "place": "LIPE",
+      "aircraft_type": "Unknown",
+      "discovered_utc": "2026-10-29T14:05:08.468831+00:00"
     }
   ]
 }
